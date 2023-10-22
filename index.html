@@ -1,0 +1,20 @@
+SELECT DISTINCT		
+g.uid user_id_groups,		
+g.group,		
+g.device device_groups,		
+g.join_dt date_joined_group,		
+u.id,		
+u.country,		
+u.gender,		
+CASE		
+WHEN max(a.uid) > 0 THEN 'converted'		
+END converted,		
+min(a.dt) earliest_purchase,		
+max(a.dt) latest_purchase,		
+coalesce(sum(a.spent), 0) spent		
+FROM		
+groups g		
+LEFT JOIN activity a ON g.uid = a.uid		
+LEFT JOIN users u on g.uid = u.id		
+GROUP BY		
+1,2,3,4,5,6,7		
